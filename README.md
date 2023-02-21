@@ -1,4 +1,4 @@
-# ECoG-electrode signals relationships in cat visual cortex
+# ECoG-electrode signals relationship in cat visual cortex
 A thesis project conducted in 2022/2023 at the Computational Systems Neuroscience Group (CSNG) of Charles University's Faculty of Mathematics and Physics. The project aims to study relationships between ECoG and electrode signals in the visual cortex of cats.
 ## Project organisation
 The project should be organized as follows:
