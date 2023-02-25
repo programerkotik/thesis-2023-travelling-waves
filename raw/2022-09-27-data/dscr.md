@@ -1,4 +1,4 @@
-Sponteneous recordings from cat's visual cortex in [idw format](https://neo.readthedocs.io/en/stable/io.html?highlight=ibw#neo.io.IgorIO).
+Sponteneous recordings from cat's visual cortex in [idw](https://neo.readthedocs.io/en/stable/io.html?highlight=ibw#neo.io.IgorIO) and [ncs](https://neo.readthedocs.io/en/stable/io.html?highlight=ncs#neo.io.NeuralynxIO) formats.
 The data is from a 64ch ECoG array and two 16ch CSD probes.
 
 Channels are:
