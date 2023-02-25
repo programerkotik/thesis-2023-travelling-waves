@@ -42,5 +42,4 @@ The raw folder is also organized by:
         └── data  <-----------# Data folder
             ├── 20Khz
             └── 1Khz
-                  ├──EcoG
 ```
