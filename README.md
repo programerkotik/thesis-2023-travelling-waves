@@ -24,7 +24,7 @@ The project should be organized as follows:
 │   │   ├── res_dscr.md <----# Short results description
 │   │   └── plots.png
 ├── README.md
-└── utils  <-----------------# Project-wide code
+└── src  <-----------------# Project-wide code
 ```
 The data is organized in two layers:
 
