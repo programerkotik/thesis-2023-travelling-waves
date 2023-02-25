@@ -18,28 +18,11 @@ The project should be organized as follows:
 ├── raw  <-------------------# Project-wide raw data
 │	  ├── 10-09-2022-data
 │   │   ├── dat_dscr.md <----# Short data description
-│   │   └── data  <-----------# Data folder
+│   │   └── data  <----------# Data folder
 ├── res  <-------------------# Project-wide results
-│	  ├── 27-09-2022-res <-----# An example Results
+│	  ├── 27-09-2022-res ---# An example Results
 │   │   ├── res_dscr.md <----# Short results description
-│   │   └── plots.png
+│   │   └── plots
 ├── README.md
-└── src  <-----------------# Project-wide code
-```
-The data is organized in two layers:
-
-1. Functional organization: Data is grouped by function
-2. Chronological organization: Experiments, data and results are also sequenced by time
-
-The raw folder is also organized by:
-
-- EcoG/electrodes: Data is separated by the specific intracranial electrodes used
-- Sampling rate: Data is separated based on the sampling frequency
-```
-├── raw  <-------------------# Project-wide raw data
-   └── 10-09-2022-data
-        ├── data_dscr.md <----# Short data description
-        └── data  <-----------# Data folder
-            ├── 20Khz
-            └── 1Khz
+└── src  <-------------------# Project-wide code
 ```
