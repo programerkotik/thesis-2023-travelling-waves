@@ -18,7 +18,7 @@ def load_ncs_data(path, sampling_rate=1000. * pq.Hz):
     t_stop = (signal.t_stop.magnitude / 1000) * pq.s # convert times (milliseconds) to seconds
     analog_signal = neo.AnalogSignal(signal, sampling_rate=sampling_rate, times=times, t_start=t_start, t_stop=t_stop)
 
-    return analog_signal
+    return analog_signal, times
 
 def load_ibw_data(path, sampling_rate=1000. * pq.Hz):
     """
@@ -37,5 +37,5 @@ def load_ibw_data(path, sampling_rate=1000. * pq.Hz):
     t_stop = (signal.t_stop.magnitude / 1000) * pq.s # convert times (milliseconds) to seconds
     analog_signal = neo.AnalogSignal(signal, sampling_rate=sampling_rate, times=times, t_start=t_start, t_stop=t_stop)
 
-    return analog_signal
+    return analog_signal, times
 
