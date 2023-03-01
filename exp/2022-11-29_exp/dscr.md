@@ -1,1 +1,0 @@
-In this experiment I used [FOOOF](https://fooof-tools.github.io/fooof/auto_tutorials/index.html) library to analyse oscillatory properies of the LFP signal from probe I and II. 
