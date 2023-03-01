@@ -76,6 +76,11 @@ for j, probe in enumerate([ts_1st_probe_filtered, ts_2nd_probe_filtered]):
         ax.set_xlabel('Time [min]')
     # add colorbar
     fig.colorbar(ax.pcolormesh(t, freq, spec_log, cmap='plasma'), ax=axes.ravel().tolist(), label='Power')
-    # plt.show()
-    exp_name = file_path.split('/')[-1].split('_')[0]
-    fig.savefig(f'res/{exp_name}_res/spectrogram/figures/spectrogram_probe_{j+1}.png')
+    
+    # save the figure
+    exp_name = file_path.split('/')[-1]
+    file_name = __file__.split('/')[-1].split('.')[0]
+    # check if the directory exists
+    if not os.path.exists(f'res/{exp_name}/{file_name}/figures'):
+        os.makedirs(f'res/{exp_name}/{file_name}/figures')
+    plt.savefig(f'res/{exp_name}/{file_name}/figures/{file_name}_probe{j+1}.png', dpi=300)

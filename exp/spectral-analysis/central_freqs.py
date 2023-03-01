@@ -83,12 +83,24 @@ for j, probe in enumerate([ts_1st_probe_filtered, ts_2nd_probe_filtered]):
         ax.set_ylabel('Power') # what units?
         plt.tight_layout()
         
-    exp_name = file_path.split('/')[-1].split('_')[0]
-    fig.savefig(f'res/{exp_name}_res/max_peaks/figures/central_freqs_probe_{j+1}.png')
+    # save the figure
+    exp_name = file_path.split('/')[-1]
+    file_name = __file__.split('/')[-1].split('.')[0]
+    # check if the directory exists
+    if not os.path.exists(f'res/{exp_name}/{file_name}/figures'):
+        os.makedirs(f'res/{exp_name}/{file_name}/figures')
+    fig.savefig(f'res/{exp_name}/{file_name}/figures/central_freqs_probe_{j+1}.png')
 
     # also plot the peak values as a function of depth
     plt.figure()
     plt.scatter(peak_vals_arr, depths, marker='o')
     plt.xlabel('Peak central frequency (Hz)')
     plt.ylabel('Depth (um)')
-    plt.savefig(f'res/{exp_name}_res/max_peaks/figures/peak_values_probe_{j+1}_depth.png')
+
+    # save the figure
+    exp_name = file_path.split('/')[-1]
+    file_name = __file__.split('/')[-1].split('.')[0]
+    # check if the directory exists
+    if not os.path.exists(f'res/{exp_name}/{file_name}/figures'):
+        os.makedirs(f'res/{exp_name}/{file_name}/figures')
+    plt.savefig(f'res/{exp_name}/{file_name}/figures/peak_values_probe_{j+1}_depth.png')

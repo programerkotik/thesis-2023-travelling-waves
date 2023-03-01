@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from neurodsp.spectral import compute_spectrum_welch
-from fooof.plts.fm import plot_fm
 from glob import glob
 from fooof import FOOOF
 import sys
@@ -9,10 +8,6 @@ import os
 from pathlib import Path
 from natsort import natsorted
 from fooof.analysis import get_band_peak_fm
-from fooof.plts.periodic import plot_peak_fits
-from fooof.core.funcs import gaussian_function
-from fooof.sim import gen_freqs
-
 
 # Set up file paths
 file_path = str(Path().absolute())
@@ -97,5 +92,11 @@ for k, probe in enumerate([ts_1st_probe_filtered, ts_2nd_probe_filtered]):
         ax.legend()
 
     plt.tight_layout()
-    exp_name = file_path.split('/')[-1].split('_')[0]
-    plt.savefig(f'res/{exp_name}_res/max_peaks_time_resolved/figures/max_peaks_hist_time_wind_{k+1}.png')
+
+    # save the figure
+    exp_name = file_path.split('/')[-1]
+    file_name = __file__.split('/')[-1].split('.')[0]
+    # check if the directory exists
+    if not os.path.exists(f'res/{exp_name}/{file_name}/figures'):
+        os.makedirs(f'res/{exp_name}/{file_name}/figures')
+    plt.savefig(f'res/{exp_name}/{file_name}/figures/center_freqs_histograms_probe_{k+1}.png')
