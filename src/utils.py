@@ -157,15 +157,3 @@ def parse_spectrum(x, y):
         y_i = [float(i) for i in y_i if i != '']
         powers.append(y_i)
     return freqs, powers
-
-def get_values_inside_brackets(x):
-    lists = [((x_i[1:-1]).split(',')) for x_i in x]
-    lists_flatten = []
-    for sublist in lists:
-        for item in sublist:
-            item.replace(' ', '')
-            try:
-                lists_flatten.append(float(item))
-            except ValueError:
-                continue
-    return lists_flatten

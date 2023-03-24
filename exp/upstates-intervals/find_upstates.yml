@@ -1,0 +1,3 @@
+params:
+  - f_range: !!python/tuple [null, 5]
+  - threshold_scalar: !!float 0.3
