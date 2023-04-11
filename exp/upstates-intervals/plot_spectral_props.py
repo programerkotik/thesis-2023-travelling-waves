@@ -9,6 +9,7 @@ import logging
 from pathlib import Path
 import matplotlib.patches as mpatches
 from fooof.sim import gen_freqs
+from scipy.stats import mannwhitneyu
 
 def gauss(mu,sigma,x):
     # lower normal part of gaussian
@@ -33,17 +34,20 @@ sys.path.append(project_path)
 # Import custom modules
 from src.utils import parse_spectrum
 
+# Set data name 
+data_name = 'Probe_1'
+
 # Set input directory for data
 input_dir = f"{project_path}/exp/{exp_name}/data"
 
 # Set output directory for plots
-output_dir = f"{project_path}/res/{exp_name}/spectral-properties"
+output_dir = f"{project_path}/res/{exp_name}/spectral-properties_{data_name}"
 
 # Create output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
 
 # Read data
-data = pd.read_csv(f'{input_dir}/spectral_properties.csv')
+data = pd.read_csv(f'{input_dir}/spectral_properties_{data_name}.csv')
 
 # Get upstate and downstate data
 upstate_data = data[data['State'] == 'upstate']
@@ -87,15 +91,82 @@ for channel in upstate_data['Channel'].unique():
 
 freqs_upstate_mean = np.array(freqs_upstate_mean)
 powers_upstate_mean = np.array(powers_upstate_mean)
+
+freqs_downstate_mean = np.array(freqs_downstate_mean)
+powers_downstate_mean = np.array(powers_downstate_mean)
+
+# mean_power_across_intervals_upstate = np.mean(powers_upstate_mean, axis=1)
+# mean_freqs_across_intervals_upstate = np.mean(freqs_upstate_mean, axis=1)
+
+
+# print(mean_power_across_intervals_upstate.shape)
+# print(mean_freqs_across_intervals_upstate.shape)
+
+
+# mean_power_across_intervals_downstate = np.mean(powers_downstate_mean, axis=1)
+# mean_freqs_across_intervals_downstate = np.mean(freqs_downstate_mean, axis=1)
+
+# print(mean_power_across_intervals_downstate.shape)
+# print(mean_freqs_across_intervals_downstate.shape)
+
+# Plot 2d histogram of center frequencies and powers
+
+length = len(upstate_data['Channel'].unique())
+fig, ax = plt.subplots(length, 1, figsize=(15, 10*length))
+
+# remove nans from data
+# Remove rows with NaN rows 
+data = data.dropna()
+
+# Get upstate and downstate data
+upstate_data = data[data['State'] == 'upstate']
+downstate_data = data[data['State'] == 'downstate']
+
+for channel in upstate_data['Channel'].unique():
+    upstate_data_ch = upstate_data[upstate_data['Channel'] == channel]
+    downstate_data_ch = downstate_data[downstate_data['Channel'] == channel]
+    
+    # Plot 2d histogram of center frequencies and powers
+    h2 = ax[channel].hist2d(downstate_data_ch['Central frequencies'], downstate_data_ch['Peak powers'], bins=40, cmap='Blues', alpha=0.7, label='Downstate')
+    h1 = ax[channel].hist2d(upstate_data_ch['Central frequencies'], upstate_data_ch['Peak powers'], bins=40, cmap='Reds', alpha=0.7, label='Upstate')
+    # ax[channel].legend(handles=[mpatches.Patch(color='tab:red', label='Upstate', alpha=0.8), mpatches.Patch(color='tab:blue', label='Downstate', alpha=0.8)])
+    ax[channel].set_ylim(0.75, 2.5)
+    ax[channel].set_xlim(0, 100)
+
+plt.xlabel('Center frequency (Hz)')
+    # ax[channel].set_title('Center frequency and power histogram in upstate and downstate signal intervals')
+
+    # Save figure
+fig.savefig(f"{output_dir}/center_freq_power_hist_channels.png")
+
+exit()
+
+# for channel in range(mean_power_across_intervals_upstate.shape[0]):
+#     fig, ax = plt.subplots(figsize=(20, 10))
+#     d_up = upstate_data[upstate_data['Channel'] == channel]
+#     d_down = downstate_data[downstate_data['Channel'] == channel]
+#     ax.hist(d_up['Central frequencies'], bins=100, density=True, alpha=0.5, label='Upstate')
+#     ax.hist(d_down['Central frequencies'], bins=100, density=True, alpha=0.5, label='Downstate')
+
+#     ax.set_xlabel('Frequency (Hz)')
+
+# plt.show()
+
+
+    # plt.savefig(f'{output_dir}/channel_{channel}.png')
+
+# exit()
+
 # Plot power spectrum
 freqs_upstate_mean = np.mean(freqs_upstate_mean, axis=0) # mean across channels
 powers_upstate_std = np.std(powers_upstate, axis=0) # std across channels
-powers_upstate_mean = np.mean(powers_upstate_mean, axis=0) # mean across channels
+powers_upstate_mean = np.mean(powers_upstate_mean, axis=0) # mean across intervals
+
 
 
 freqs_downstate_mean = np.mean(freqs_downstate_mean, axis=0) # mean across channels
 powers_downstate_std = np.std(powers_downstate_mean, axis=0)  # std across channels
-powers_downstate_mean = np.mean(powers_downstate_mean, axis=0) # mean across channels
+powers_downstate_mean = np.mean(powers_downstate_mean, axis=0) # mean across intervals
 
 fig, ax = plt.subplots(figsize=(20, 10))
 ax.plot(np.mean(freqs_upstate_mean, axis=0), np.mean(powers_upstate_mean, axis=0), label='Upstate (mean)', color='tab:red')
@@ -183,9 +254,24 @@ powers_beta_upstate = []
 powers_beta_downstate = []
 beta_band = [12, 30]
 beta_band_idx = np.where((freqs >= beta_band[0]) & (freqs <= beta_band[1]))[0]
-beta_band_power_downstate = [peak_vals[beta_band_idx] for peak_vals in downstate_peak_vals]
-beta_band_power_upstate = [peak_vals[beta_band_idx] for peak_vals in upstate_peak_vals]
+beta_band_power_downstate = np.array([peak_vals[beta_band_idx] for peak_vals in downstate_peak_vals])
+beta_band_power_upstate = np.array([peak_vals[beta_band_idx] for peak_vals in upstate_peak_vals])
 
+
+beta_band_power_downstate = np.concatenate(beta_band_power_downstate)
+beta_band_power_upstate = np.concatenate(beta_band_power_upstate)
+# # exit()
+
+# # Use Mann-Whitney U test to check if distributions are same
+# stat, p = mannwhitneyu(beta_band_power_downstate, beta_band_power_upstate)
+# print('Statistics=%.3f, p=%.3f' % (stat, p))
+# # interpret
+# alpha = 0.05
+# if p > alpha:
+#     print('Same distribution (fail to reject H0)')
+# else:
+#     print('Different distribution (reject H0)')
+ 
 # Plot bar chart of power in beta band
 fig, ax = plt.subplots(figsize=(20, 10))
 sns.barplot(x=['Downstate', 'Upstate'], y=[np.mean(beta_band_power_downstate), np.mean(beta_band_power_upstate)], ax=ax, palette=['tab:blue', 'tab:red'], errorbar='sd')
