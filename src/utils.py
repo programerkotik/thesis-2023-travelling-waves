@@ -79,8 +79,6 @@ def define_upstate_regions(data, times, threshold_scalar=2):
 
     return event_times, threshold_values[0]
 
-
-
 def lagged_correlation(probe_data, ecog_data):
     """
     Computes lagged correlation between probe data and ecog data.
