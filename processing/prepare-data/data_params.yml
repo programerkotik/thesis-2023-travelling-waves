@@ -1,0 +1,3 @@
+params:
+  - sampling_rate: !!python/list [1000]
+  - format: !!python/list ['ibw']
