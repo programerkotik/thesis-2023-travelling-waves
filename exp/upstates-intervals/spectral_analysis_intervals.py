@@ -13,7 +13,6 @@ from tqdm import tqdm
 # Set up file paths
 file_path = str(Path().absolute())
 project_path = str(Path().absolute().parent.parent)
-exp_name = file_path.split('/')[-1]
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -24,24 +23,32 @@ os.chdir(project_path)
 sys.path.append(project_path)
 
 # Import custom modules
-from src.utils import split_intervals
+from src.utils import split_intervals, filter_line_noise
 
-# Read raw data
-input_dir = f"{project_path}/exp/{exp_name}/data"
+# Specify the studied experiments
+exp = 'w12_07.spont'
+
+# Specify input directory
+input_dir = f'{project_path}/data/processed/{exp}/1kHz'
 
 files = os.listdir(input_dir)
 
 for file in files:
     if file.endswith('.npy'):
-        if file == 'ecog.npy':
+        if file == 'ts_filtered_ecog.npy':
             ecog_data = np.load(input_dir + '/' + file, allow_pickle=True)
-        if file == 'probe1.npy':
+        if file == 'ts_filtered_probe1.npy':
             probe1_data = np.load(input_dir + '/' + file, allow_pickle=True)
-        if file == 'probe2.npy':
+        if file == 'ts_filtered_probe2.npy':
             probe2_data = np.load(input_dir + '/' + file, allow_pickle=True)
-        if file == 'times_ecog.npy':
+        if file == 'times.npy':
             times = np.load(input_dir + '/' + file, allow_pickle=True)
-            times = times[0]
+
+#!! Don't forget that w12_07.spont is not line filtered
+# Filter line noise
+ecog_data = np.array([filter_line_noise(d, 1000, 550) for d in ecog_data])
+probe1_data = np.array([filter_line_noise(d, 1000, 550) for d in probe1_data])
+probe2_data = np.array([filter_line_noise(d, 1000, 550) for d in probe2_data])
 
 # Read upstate event times
 upstates = np.load(f"{input_dir}/event_times.npy", allow_pickle=True)
@@ -65,7 +72,7 @@ for state, ecog_data in data.items():
             if len(interval) < 500:
                 continue
 
-             # Save spectral properties
+            # Save spectral properties
             spectral_properties['Interval id'].append(i)
             spectral_properties['State'].append(state)
             spectral_properties['Channel'].append(channel)
@@ -85,10 +92,10 @@ for state, ecog_data in data.items():
             spectral_properties['Power spectrum (powers)'].append(powers)
 
 # Save spectral properties
-output_dir = f"{project_path}/exp/{exp_name}/data"
+output_dir = f"{project_path}/res/upstates-intervals"
 
 # create output directory if it doesn't exist
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-pd.DataFrame(spectral_properties).to_csv(f"{output_dir}/spectral_properties.csv", index=False, float_format='%.3f')
+pd.DataFrame(spectral_properties).to_csv(f"{output_dir}/spectral_properties_{exp}.csv", index=False, float_format='%.3f')
