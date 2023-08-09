@@ -1,2 +1,2 @@
 ## Travelling waves
-In this experiments I have started analysing the ECoG  signal. We have studied visually the potential presence/absence of travelling waves in the signal and the properties of them. Then, we have also studied the LFP-Spike coupling. 
+Here we only visualize the travelling wave using travelling_waves.ipynb notebook. For this visualization we only focused on the alpha band and also removed common reference beforehead. 
