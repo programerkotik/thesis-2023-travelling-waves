@@ -23,7 +23,7 @@ def plot_ecog_correlation(exp):
     sys.path.append(project_path)
 
     # Set plotting style
-    sns.set_context('paper', font_scale=2, rc={'lines.linewidth': 2})
+    sns.set_context('paper', font_scale=1.3, rc={'lines.linewidth': 2})
     sns.set_palette('colorblind')
     sns.set_style('white')
 
@@ -46,15 +46,15 @@ def plot_ecog_correlation(exp):
     times_ecog = np.load(ecog_times_path)
 
     # Set GridSpec for the figure
-    fig = plt.figure(figsize=(30, 20))
-    gs = GridSpec(2, 3, figure=fig)
+    fig = plt.figure(figsize=(20, 22))
+    gs = GridSpec(2, 2, figure=fig)
     ax1 = fig.add_subplot(gs[0, :]) # Time series
     ax2 = fig.add_subplot(gs[1, 0]) # Correlation heatmap
-    ax3 = fig.add_subplot(gs[1, 1:3]) # Graph correlation by distance
+    ax3 = fig.add_subplot(gs[1, 1]) # Graph correlation by distance
 
     # Plot the time series
     for i, ch in enumerate(range(ts_ecog.shape[0])):
-        ax1.plot(times_ecog, ts_ecog[ch] - 15e-5 * i, label=f'Channel {ch}')
+        ax1.plot(times_ecog, ts_ecog[ch] - 15e-5 * i, label=f'Channel {ch}', c='tab:red', alpha=0.5)
 
     ax1.set_xlabel('Time (s)')
     ax1.set_ylabel('Voltage')
@@ -110,18 +110,18 @@ def plot_ecog_correlation(exp):
             distances.append(distance)
 
     # Plot
-    ax3.scatter(distances, corrs, alpha=0.5, c='tab:blue')
+    ax3.scatter(distances, corrs, alpha=0.1, c='tab:cyan')
 
     # also plot the mean correlation for each distance
     mean_corrs = []
     for d in np.unique(distances):
         mean_corrs.append(np.mean(np.array(corrs)[np.where(np.array(distances) == d)]))
-    ax3.scatter(np.unique(distances), mean_corrs, c='r', marker='x', s=100)
+    ax3.scatter(np.unique(distances), mean_corrs, c='tab:red', marker='x', s=150)
 
     # Connect the mean correlation points
     for i in range(len(np.unique(distances)) - 1):
         ax3.plot([np.unique(distances)[i], np.unique(distances)[i+1]],
-                 [mean_corrs[i], mean_corrs[i+1]], linestyle='--', c='tab:red', alpha=0.5)
+                 [mean_corrs[i], mean_corrs[i+1]], linestyle='--', c='tab:red', alpha=0.5, linewidth=3)
 
     ax3.set_xlim(0.5, 11.5)
     ax3.set_xlabel('Distance')
@@ -129,9 +129,9 @@ def plot_ecog_correlation(exp):
     ax3.set_title('Correlation vs distance')
 
     # Add letters to subplots
-    ax1.text(-0.1, 1.1, 'A)', transform=ax1.transAxes, fontsize=18)
-    ax2.text(-0.1, 1.1, 'B)', transform=ax2.transAxes, fontsize=18)
-    ax3.text(-0.1, 1.1, 'C)', transform=ax3.transAxes, fontsize=18)
+    ax1.text(-0.1, 1.1, 'A', transform=ax1.transAxes, fontsize=20)
+    ax2.text(-0.1, 1.1, 'B', transform=ax2.transAxes, fontsize=20)
+    ax3.text(-0.1, 1.1, 'C', transform=ax3.transAxes, fontsize=20)
 
     # Save figure
     fig.savefig(f"{output_dir}/ecog_ecog_correlation.png", dpi=300)

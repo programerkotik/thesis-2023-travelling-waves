@@ -16,7 +16,7 @@ def plot_correlation(exp):
     project_path = str(Path().absolute().parent.parent)
 
     # Set plotting style
-    sns.set_context('paper', font_scale=2, rc={'lines.linewidth': 2})
+    sns.set_context('paper', font_scale=1.8, rc={'lines.linewidth': 2})
     sns.set_palette('colorblind')
     sns.set_style('white')
 
@@ -79,7 +79,7 @@ def plot_correlation(exp):
     depths = np.arange(0, 1600, 100)
 
     # Set GridSpec for the figure
-    fig = plt.figure(figsize=(25, 25))
+    fig = plt.figure(figsize=(20, 20))
     gs = GridSpec(3, 2, figure=fig)
     ax1 = fig.add_subplot(gs[0, 0]) # Heatmap 1 for probe 1
     ax2 = fig.add_subplot(gs[1, 0]) # Heatmap 2 for probe 2
@@ -104,11 +104,11 @@ def plot_correlation(exp):
     ax3 = fig.add_subplot(gs[2, :]) # PCC ECoG vs Probe 1 and 2
 
     # Create the plot for the correlation between ecog and probe 1 and 2
-    ax3.errorbar(depths, probe1_corrs_mean[:, 0], yerr=probe1_corrs_std[:, 0], fmt='o', label='Probe 1', color='tab:red')
-    ax3.errorbar(depths, probe2_corrs_mean[:, 0], yerr=probe2_corrs_std[:, 0], fmt='o', label='Probe 2', color='tab:blue')
+    ax3.errorbar(depths, probe1_corrs_mean[:, 0], yerr=probe1_corrs_std[:, 0], fmt='o', label='Probe 1', color='tab:purple')
+    ax3.errorbar(depths, probe2_corrs_mean[:, 0], yerr=probe2_corrs_std[:, 0], fmt='o', label='Probe 2', color='tab:olive')
 
-    ax3.plot(depths, probe1_corrs_mean[:, 0], alpha=0.2, linestyle='--', color='tab:red')
-    ax3.plot(depths, probe2_corrs_mean[:, 0], alpha=0.2, linestyle='--', color='tab:blue')
+    ax3.plot(depths, probe1_corrs_mean[:, 0], alpha=0.2, linestyle='--', color='tab:purple', linewidth=2)
+    ax3.plot(depths, probe2_corrs_mean[:, 0], alpha=0.2, linestyle='--', color='tab:olive', linewidth=2)
 
     ax3.set_title('Pearson correlation coefficient between ECoG signals and probe signals')
     ax3.set_xlabel('Depth (um)')
@@ -121,7 +121,7 @@ def plot_correlation(exp):
     for j, (probe, ax) in enumerate(zip([probe1_data, probe2_data], [ax5, ax6])):
         # On ax2 plot Probe1 channels with event times overlayed
         for i, probe_d in enumerate(probe):
-            ax.plot(times, probe_d - 0.001*i, label=f'Channel {i}')
+            ax.plot(times, probe_d - 0.001*i, label=f'Channel {i}', color='tab:blue')
 
         for i in range(len(event_times)):
             ax.axvspan(event_times[i][0], event_times[i][1], alpha=0.2, color='tab:green')
@@ -133,11 +133,11 @@ def plot_correlation(exp):
         #ax.legend()
 
     # Also add letters to the subplots 
-    ax1.text(-0.1, 1.1, 'A)', transform=ax1.transAxes, size=18)
-    ax2.text(-0.1, 1.1, 'B)', transform=ax2.transAxes, size=18)
-    ax3.text(-0.1, 1.1, 'C)', transform=ax3.transAxes, size=18)
-    ax5.text(-0.1, 1.1, 'D)', transform=ax5.transAxes, size=18)
-    ax6.text(-0.1, 1.1, 'E)', transform=ax6.transAxes, size=18)
+    ax1.text(-0.1, 1.1, 'A', transform=ax1.transAxes, size=20)
+    ax2.text(-0.1, 1.1, 'B', transform=ax2.transAxes, size=20)
+    ax3.text(-0.1, 1.1, 'C', transform=ax3.transAxes, size=20)
+    ax5.text(-0.1, 1.1, 'D', transform=ax5.transAxes, size=20)
+    ax6.text(-0.1, 1.1, 'E', transform=ax6.transAxes, size=20)
 
     # save figure
     plt.savefig(f'{output_dir}/ecog_probes_correlation.png')
