@@ -82,10 +82,13 @@ def compute_gaussians(df, probe_type, state):
 
 def plot_colormesh(probe_type, state, ys, depths, ax):
     """Plot the colormesh for a specific probe type and state."""
-    ax.pcolormesh(np.linspace(0, 100, 10000), depths, ys, cmap='rainbow')
+    ax.pcolormesh(np.linspace(0, 100, 10000), depths, ys, cmap='viridis')
     ax.set_title(f'{probe_type}, {state}')
     ax.set_xlabel('Frequency (Hz)')
-    ax.set_ylabel('Depth (um)')
+    if probe_type == 'ECoG':
+        ax.set_ylabel('Channel')
+    else:
+        ax.set_ylabel('Depth (um)')
 
 
 for df, name in zip([w12_18, w12_07], data_exp_names):
@@ -137,19 +140,19 @@ for df, name in zip([w12_18, w12_07], data_exp_names):
                 plot_colormesh(probe_type, state, ys, -depths, ax6)
 
     # Also add letters to the subplots 
-    ax1.text(-0.1, 1.1, 'A', transform=ax1.transAxes, size=18)
-    ax2.text(-0.1, 1.1, 'B', transform=ax2.transAxes, size=18)
-    ax3.text(-0.1, 1.1, 'C', transform=ax3.transAxes, size=18)
-    ax4.text(-0.1, 1.1, 'D', transform=ax4.transAxes, size=18)
-    ax5.text(-0.1, 1.1, 'E', transform=ax5.transAxes, size=18)
-    ax6.text(-0.1, 1.1, 'F', transform=ax6.transAxes, size=18)
+    ax1.text(-0.1, 1.1, 'A', transform=ax1.transAxes, size=20)
+    ax2.text(-0.1, 1.1, 'B', transform=ax2.transAxes, size=20)
+    ax3.text(-0.1, 1.1, 'C', transform=ax3.transAxes, size=20)
+    ax4.text(-0.1, 1.1, 'D', transform=ax4.transAxes, size=20)
+    ax5.text(-0.1, 1.1, 'E', transform=ax5.transAxes, size=20)
+    ax6.text(-0.1, 1.1, 'F', transform=ax6.transAxes, size=20)
 
     # Add colorbar
     cbar = fig.colorbar(ax1.collections[0], cax=cax)
     cbar.set_label('FOOOF Power')
-    cbar.ax.yaxis.set_label_position('right')
+    cbar.ax.yaxis.set_label_position('left')
 
-    # Add figure title
+    # Add figure titleTo 
     fig.suptitle(f'{name} - Depth resolved spectral properties', fontsize=20)
 
     plt.tight_layout()

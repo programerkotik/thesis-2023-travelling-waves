@@ -45,7 +45,7 @@ def main(args):
                 probe2_data = np.load(input_dir + '/' + file, allow_pickle=True)
             if file == 'times.npy':
                 times = np.load(input_dir + '/' + file, allow_pickle=True)
-            if file == 'event_times.npy':
+            if file == 'event_times_inverted.npy':
                 event_times = np.load(input_dir + '/' + file, allow_pickle=True)
 
 
@@ -132,7 +132,7 @@ def main(args):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    pd.DataFrame(spectral_properties).to_csv(f"{output_dir}/spectral_properties_{exp}.csv", index=False)
+    pd.DataFrame(spectral_properties).to_csv(f"{output_dir}/spectral_properties_{exp}_inverted.csv", index=False)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze spectral properties of upstate and downstate intervals in Probes data.")

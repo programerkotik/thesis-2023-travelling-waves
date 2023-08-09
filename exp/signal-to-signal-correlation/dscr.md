@@ -23,7 +23,7 @@ The output of upstate_downstate_pcc.py is csv table with pcc, maximum pcc and la
 res/signal-to-signal-correlation/<experiment_code>/upstate_downstate_pcc.csv
 ```
 
-This csv table is analyzed and visualized by the upstate_downstate_pcc_plot.py script. The upstate_downstate_pcc_plot.py script could be run with the following command:
+The csv table is analyzed and visualized by the upstate_downstate_pcc_plot.py script. The upstate_downstate_pcc_plot.py script could be run with the following command:
 
 ```bash
 python upstate_downstate_pcc_plot.py>
