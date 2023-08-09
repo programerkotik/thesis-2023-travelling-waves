@@ -1,5 +1,4 @@
-# ! Modified to run inverted experiment
-
+## ! Inverted upstate detection
 from matplotlib.gridspec import GridSpec
 import matplotlib.pyplot as plt
 import sys
@@ -96,8 +95,8 @@ def find_upstates(exp_name):
     ax3 = fig.add_subplot(gs[-1, :]) # Upstates with filtered signal snippet
 
     # Plot filtered time series snippet
-    ax1.plot(times_ecog, ts_ecog[0], label='Raw signal', alpha=0.3)
-    ax1.plot(times_ecog, sig_filt[0], label='Filtered signal')
+    ax1.plot(times_ecog, ts_ecog[0], label='Raw signal', alpha=0.4, color='tab:cyan')
+    ax1.plot(times_ecog, sig_filt[0], label='Filtered signal', color='tab:red')
     ax1.set_xlabel('Time (s)')
     ax1.set_ylabel('Voltage')
     ax1.set_title('Filtered ECoG time series snippet, channel 0')
@@ -128,9 +127,9 @@ def find_upstates(exp_name):
     ax3.set_xlim(110, 120)
 
     # Add letters to subplots
-    ax1.text(-0.1, 1.1, 'A)', transform=ax1.transAxes, size=18)
-    ax2.text(-0.1, 1.1, 'B)', transform=ax2.transAxes, size=18)
-    ax3.text(-0.1, 1.1, 'C)', transform=ax3.transAxes, size=18)
+    ax1.text(-0.1, 1.1, 'A', transform=ax1.transAxes, size=20)
+    ax2.text(-0.1, 1.1, 'B', transform=ax2.transAxes, size=20)
+    ax3.text(-0.1, 1.1, 'C', transform=ax3.transAxes, size=20)
 
     # Save figure
     plt.savefig(f"{fig_output_dir}/upstate_detection.png", dpi=300)

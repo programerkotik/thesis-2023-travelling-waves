@@ -1,9 +1,0 @@
-Sampling rate: 1000 Hz, Raw data format: ibw. Data were filtered for line noise (60 Hz). 
- Data were saved as .npy files: 
-- ts_filtered_probe1 contains the filtered data of the first probe, 
-- times_probe1 contains the corresponding timestamps, 
-- ts_filtered_probe2 contains the filtered data of the second probe, 
-- times_probe2 contains the corresponding timestamps, 
-- ts_filtered_ecog contains the filtered data of the ecog, 
-- times_ecog contains the corresponding timestamps.
-More information about raw data can be found in the dscr.md file in the raw directory.

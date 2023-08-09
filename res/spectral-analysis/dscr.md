@@ -1,1 +1,0 @@
-The main goal of the analysis was to understand the spectral properties of the signal recorded from probe I and II. To analyse the presence or absence of oscillatory activity we applied the [FOOOF model](https://fooof-tools.github.io/fooof/index.html). 
